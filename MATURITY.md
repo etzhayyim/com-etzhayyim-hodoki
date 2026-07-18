@@ -1,38 +1,29 @@
 # hodoki 解き — Maturity
 
-**Stage: R0** (scaffold) — ELV (end-of-life vehicle) disassembly + materials recovery, 5-layer
-processing chain. Closes the circular loop with kanayama (metals) / makura (seat foam) /
-silicon (ECU) / hikari (second-life batteries). Two CONSTITUTIONAL-FIRST gates: G8 mandatory
-data wipe + G12 right-to-repair part catalog.
+**Stage: R0** (scaffold) — ELV disassembly and materials recovery. The actor closes circular
+feeds with kanayama, makura, silicon, and hikari, with constitutional G8 data-wipe and G12
+right-to-repair gates.
 
 | Dimension | State |
 |---|---|
-| Lexicons | ✅ 8 under `com.etzhayyim.hodoki.*` (elvIntake / depollution / batteryHandling / catalystRecovery / partsHarvestCatalog / dataWipe / shredOutput / silenDeconstructionReview) |
-| Cells | 🟡 9 path-reserved (5-layer ELV chain, R0) |
-| Manifest | ✅ `manifest.jsonld` — `constitutionalGates` (G1–G14) + `nonGoals` (N1–N10) machine-readable |
-| Tests | ✅ **25 green** — `methods/test_charter_gates.py` (**9**, added 2026-06-16: gate set + data-wipe + F-gas + Li-ion + RTR + PGM + circular feed + intake screen) **+** `py/test_agent.py` (16, agent layer); `./run_tests.sh` aggregates both |
-| Methods | 🟡 agent present; offline disassembly engine = R1 |
+| Lexicons | ✅ 8 Datomic-native definitions plus 8 canonical EDN imports of the central wire contracts in `data/lex/` |
+| Cells | 🟡 9 R0 declarations in `data/cells/`; social state-machine CLJC in `src/hodoki/cells/` |
+| Manifest | ✅ canonical `manifest.edn`; JSON-LD mirror in `wire/manifest.jsonld` |
+| Tests | ✅ 43 tests / 90 assertions via `clojure -M -m hodoki.test-runner` |
+| Methods | 🟡 agent, social, and MCP ingestion CLJC; physical disassembly remains R1 |
+| Policy audit | ✅ canonical EDN parse, wire boundary, and deprecated-language checks via `bb scripts/audit.clj` |
 
-## Charter gates pinned by the new charter-gate test
+## Substrate-native status
 
-- **Full gate set** — manifest declares exactly G1–G14; N1 (military) + N2 (aerospace) excluded.
-- **G8 data wipe (CONSTITUTIONAL FIRST)** — `dataWipeAttestation` requires `ecuWipes` +
-  `method` + `verified` + `g8Compliant`; method includes cryptographic-destruction +
-  physical-chip-shred fallback (anti-surveillance before disassembly).
-- **G6 F-gas** — `depollutionAttestation` requires `fgasCapture` + `recoveryRatePct` +
-  `atmosphericVentingDetected` + `g6Compliant` (≥95% capture, no venting).
-- **G7 Li-ion safety** — `batteryHandlingRecord` requires `g7Compliant` + `soh` +
-  `thermalBaseline` + `routingDecision`.
-- **G12 right-to-repair (CONSTITUTIONAL FIRST)** — `partsHarvestCatalog` requires
-  `g12RightToRepairInvariant` + `g12NoDrmCircumvention` + `g12NoProprietaryLockIn` +
-  `g12PublicDiscovery` + `vinProvenance` + `partDid` + `catalogCid`.
-- **G14 PGM** — `catalystRecoveryRecord` requires `g14Compliant` + `yieldAudit` (Pt/Pd/Rh ≥95%).
-- **G13 circular feed** — `shredOutputAttestation` requires `g13Compliant` + `kanayamaHandoff`
-  + ferrous/non-ferrous mass (cross-actor circular feed to kanayama).
-- **Intake screen** — `elvIntakeRecord` requires `charterScan` + `stolenRegistryCheck` +
-  `n7TitleVerified` + `vin`.
+EDN is authoritative. JSON and JSON-LD are isolated under `wire/`; the central eight hodoki
+JSON contracts have matching `data/lex/*.wire.edn` canonical imports. Runtime and tests are
+Clojure/CLJC. Python, its cross-language parity harness, deployment shell, Go, and TinyGo are
+pruned rather than ported.
+
+The charter suite pins G1–G14, civilian-only intake, G6 F-gas capture, G7 battery safety,
+G8 data destruction, G12 right-to-repair, G13 circular feed, and G14 PGM recovery.
 
 ## R0 → R1 gate
 
-silenDeconstructionReview `r1-activation` + Council Safe tx; cell `.solve()` stays R0-gated.
-G2 (≥98% mass-balance) / G6 / G13 / G14 quantitative thresholds enforced in the R1 cell logic.
+`silenDeconstructionReview` R1 activation plus Council Safe transaction; physical cell
+execution stays R0-gated until then.

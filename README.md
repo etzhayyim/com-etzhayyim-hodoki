@@ -5,6 +5,16 @@
 **ADR**: ADR-2605261215 (R0 scaffold), ADR-2605261230 (R1, reserved), ADR-2605261245 (R2, reserved), ADR-2605261300 (R3, reserved)
 **Status**: R0 scaffold (2026-05-26) — all cells import-time RuntimeError
 
+## Repository layout
+
+- `manifest.edn` is the canonical actor manifest; EDN is authoritative.
+- `data/` contains canonical cells, lexicons, schemas, and seed data.
+- `src/` and `test/` contain the Clojure/CLJC implementation and complete test suite.
+- `wire/` contains JSON/JSON-LD interoperability mirrors only.
+- Python, Go/TinyGo, and legacy deployment shell implementations are deprecated and absent.
+
+Run `clojure -M -m hodoki.test-runner` and `bb scripts/audit.clj` before publishing.
+
 ## Overview
 
 End-of-life vehicle (ELV) disassembly + materials recovery orchestrator. Adopts mature OEM-run ELV facility methodology (depollution → parts harvest → shred → sort); religious-corp-ised by mandatory data-wipe, right-to-repair parts catalog, ≥95% material recovery, ≥95% F-gas capture, ≥95% PGM yield, and cross-actor circular feed.
@@ -121,7 +131,7 @@ Schema details deferred to R1 ADR.
 ## References
 
 - `/90-docs/adr/2605261215-hodoki-elv-disassembly-tier-b-actor-r0.md` — Master ADR
-- `/20-actors/kanayama/README.md` — downstream metals consumer + G2 pattern inheritance
-- `/20-actors/makura/README.md` — downstream seat-foam consumer + G13 invariant closure
-- `/20-actors/wadachi/README.md` — vehicle build-side sibling
+- `/orgs/etzhayyim/com-etzhayyim-kanayama/README.md` — downstream metals consumer + G2 pattern inheritance
+- `/orgs/etzhayyim/com-etzhayyim-makura/README.md` — downstream seat-foam consumer + G13 invariant closure
+- `/orgs/etzhayyim/com-etzhayyim-wadachi/README.md` — vehicle build-side sibling
 - `/CLAUDE.md` — Religious-corp status table row 53

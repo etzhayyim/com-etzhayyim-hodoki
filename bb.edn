@@ -1,0 +1,5 @@
+{:tasks
+ {test {:doc "Run the complete substrate-native test suite"
+        :task (shell "clojure -M -m hodoki.test-runner")}
+  audit {:doc "Validate canonical EDN and repository boundaries"
+         :task (load-file "scripts/audit.clj")}}}

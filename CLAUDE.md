@@ -1,4 +1,4 @@
-# 20-actors/hodoki — CLAUDE.md
+# com-etzhayyim-hodoki — CLAUDE.md
 
 ## Identity
 
@@ -48,7 +48,7 @@ elv_parts_harvest <─ elv_catalyst_recovery <─ elv_seat_textile_recovery
 
 ## Constitutional Gates (G1–G14)
 
-**IMMUTABLE R0–R3.** Stored in `manifest.jsonld` under `hodoki:constitutionalGates`. Changes require Council Lv6+ supermajority + new ADR.
+**IMMUTABLE R0–R3.** Stored canonically in `manifest.edn` under `:actor/manifest` / `"constitutionalGates"`. `wire/manifest.jsonld` is an interoperability mirror. Changes require Council Lv6+ supermajority + new ADR.
 
 See `ADR-2605261215` §4 for definitions. Key enforcement + constitutional firsts:
 
@@ -161,39 +161,23 @@ See `ADR-2605261215` §4 for definitions. Key enforcement + constitutional first
 5. 5-vehicle trial cohort completed
 6. Cell source replaces RuntimeError with LangGraph stub bodies
 
-**Deployment** (R1+):
-
-```bash
-cd 20-actors/hodoki
-e7m actor deploy .
-```
-
-Returns error in R0; waits for R1 ADR activation.
+Deployment remains disabled until the R1 ADR activation.
 
 ## Testing (R0)
 
-**Smoke test**: Verify all 9 cells import without exception:
-
 ```bash
-cd 40-engine/kotoba/crates/kotoba-kotodama
-python -c "from cells.elv_intake_audit import ElvIntakeAuditCell; assert ElvIntakeAuditCell"
-python -c "from cells.elv_depollution import ElvDepollutionCell; assert ElvDepollutionCell"
-python -c "from cells.elv_battery_handling import ElvBatteryHandlingCell; assert ElvBatteryHandlingCell"
-python -c "from cells.elv_parts_harvest import ElvPartsHarvestCell; assert ElvPartsHarvestCell"
-python -c "from cells.elv_catalyst_recovery import ElvCatalystRecoveryCell; assert ElvCatalystRecoveryCell"
-python -c "from cells.elv_seat_textile_recovery import ElvSeatTextileRecoveryCell; assert ElvSeatTextileRecoveryCell"
-python -c "from cells.elv_body_shred import ElvBodyShredCell; assert ElvBodyShredCell"
-python -c "from cells.elv_emissions_audit import ElvEmissionsAuditCell; assert ElvEmissionsAuditCell"
-python -c "from cells.elv_provenance_binder import ElvProvenanceBinderCell; assert ElvProvenanceBinderCell"
+clojure -M -m hodoki.test-runner
+bb scripts/audit.clj
 ```
 
-All should pass import; `.solve()` calls should raise `RuntimeError("hodoki R0 scaffold...")`.
+The audit enforces EDN as canonical data, confines JSON/JSON-LD to `wire/`, and rejects deprecated Python, Go/TinyGo, requirements, and shell artifacts.
 
 ## Related Files
 
-- `/20-actors/hodoki/manifest.jsonld` — DID + cell registry + gates + non-goals
+- `manifest.edn` — canonical DID + cell registry + gates + non-goals
+- `wire/manifest.jsonld` — JSON-LD interoperability mirror
 - `/90-docs/adr/2605261215-hodoki-elv-disassembly-tier-b-actor-r0.md` — Master ADR
-- `/20-actors/kanayama/README.md` — downstream metals consumer + G2 pattern inheritance
-- `/20-actors/makura/README.md` — downstream seat-foam consumer + G13 invariant closure
-- `/20-actors/wadachi/README.md` — vehicle build-side sibling
+- `/orgs/etzhayyim/com-etzhayyim-kanayama/README.md` — downstream metals consumer + G2 pattern inheritance
+- `/orgs/etzhayyim/com-etzhayyim-makura/README.md` — downstream seat-foam consumer + G13 invariant closure
+- `/orgs/etzhayyim/com-etzhayyim-wadachi/README.md` — vehicle build-side sibling
 - `/CLAUDE.md` — Religious-corp status table row 53
